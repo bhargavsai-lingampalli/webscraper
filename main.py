@@ -177,6 +177,8 @@ for college in colleges:
         courses = [x.text for x in Select(driver.find_element(By.XPATH, '//*[@id="collegeId"]')).options[1:]]
     except:
         courses = []
+        with open('problems.txt', 'a') as fp:
+            fp.write(f"{college},ALL COURSES,{asctime()}\n")
         print(college, 'options problem')
     for course in courses:
         try:
@@ -186,8 +188,9 @@ for college in colleges:
             html = driver.find_elements(By.XPATH, '//*[@id="example"]/tbody/tr/td')
             write_into_csv(html, college, course)
             with open('completed.txt', 'a') as fp:
-                fp.write(f'{college} - {course} - TIME: {asctime()}\n')
+                fp.write(f'{college},{course},{asctime()}\n')
         except:
-            print(f"{college}, {course}")
+            with open('problems.txt', 'a') as fp:
+                fp.write(f"{college},{course},{asctime()}\n")
 
 driver.close()
